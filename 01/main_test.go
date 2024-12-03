@@ -77,3 +77,84 @@ func TestCalcTotalDistance(t *testing.T) {
 		})
 	}
 }
+
+func TestBinarySearch(t *testing.T) {
+	input := []struct {
+		name          string
+		target        int
+		inputStruct   input
+		expectedLeft  int
+		expectedRight int
+	}{
+		{
+			name:   "single index and dne",
+			target: 2,
+			inputStruct: input{
+				leftList:  []int{1, 2, 3, 3, 3, 4},
+				rightList: []int{3, 3, 3, 4, 5, 9},
+			},
+			expectedLeft:  1,
+			expectedRight: -1,
+		},
+		{
+			name:   "exists in both",
+			target: 4,
+			inputStruct: input{
+				leftList:  []int{1, 2, 3, 3, 3, 4},
+				rightList: []int{3, 3, 3, 4, 5, 9},
+			},
+			expectedLeft:  5,
+			expectedRight: 3,
+		},
+		{
+			name:   "multiple exists",
+			target: 3,
+			inputStruct: input{
+				leftList:  []int{1, 2, 3, 3, 3, 4},
+				rightList: []int{3, 3, 3, 4, 5, 9},
+			},
+			expectedLeft:  3,
+			expectedRight: 1,
+		},
+	}
+	for _, test := range input {
+		t.Run(test.name, func(t *testing.T) {
+			actualLeftIndex := binarySearch(test.target, test.inputStruct.leftList)
+			actualRightIndex := binarySearch(test.target, test.inputStruct.rightList)
+			if actualLeftIndex != test.expectedLeft {
+				fmt.Printf("expectedLeft: %d | actualLeft: %d\n", test.expectedLeft, actualLeftIndex)
+				t.Fail()
+			}
+			if actualRightIndex != test.expectedRight {
+				fmt.Printf("expectedRight: %d | actualRight: %d\n", test.expectedRight, actualRightIndex)
+				t.Fail()
+			}
+		})
+	}
+}
+
+func TestSimilarityScore(t *testing.T) {
+	inputs := []struct {
+		name        string
+		inputStruct input
+		expected    int
+	}{
+		{
+			name: "example",
+			inputStruct: input{
+				leftList:  []int{1, 2, 3, 3, 3, 4},
+				rightList: []int{3, 3, 3, 4, 5, 9},
+			},
+			expected: 31,
+		},
+	}
+	for _, test := range inputs {
+		t.Run(test.name, func(t *testing.T) {
+			actual := test.inputStruct.findSimilarityScore()
+			if actual != test.expected {
+				fmt.Printf("expected: %d | actual: %d\n", test.expected, actual)
+				t.Fail()
+			}
+		})
+	}
+}
